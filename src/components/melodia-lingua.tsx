@@ -76,7 +76,7 @@ export function MelodiaLingua() {
     setIsTranslating(false);
   };
 
-  const onSynthesize = async () => {
+  const onSynthesize = async (makeDuet: boolean) => {
     if (!malayalamLyrics.trim()) {
       toast({
         variant: "destructive",
@@ -92,6 +92,7 @@ export function MelodiaLingua() {
     const formData = new FormData();
     formData.append('lyrics', malayalamLyrics);
     formData.append('voiceStyle', selectedVoice);
+    formData.append('makeDuet', String(makeDuet));
 
     const result = await handleSynthesize(formData);
 

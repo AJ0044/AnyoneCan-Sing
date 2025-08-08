@@ -23,6 +23,7 @@ const SynthesizeSongInputSchema = z.object({
       'achird',
     ])
     .describe("The desired voice style for the synthesized song."),
+  makeDuet: z.boolean().optional().describe("Whether to leave silent gaps in the audio for a duet."),
 });
 export type SynthesizeSongInput = z.infer<typeof SynthesizeSongInputSchema>;
 
@@ -46,6 +47,13 @@ const synthesizeSongFlow = ai.defineFlow(
   async input => {
     let promptText = input.lyrics;
     let voiceName: string = input.voiceStyle;
+
+    if (input.makeDuet) {
+        // Add SSML breaks between lines to create pauses for the duet
+        const lines = input.lyrics.split('\n').filter(line => line.trim() !== '');
+        const ssmlLines = lines.map(line => `<p>${line}</p><break time="2s"/>`);
+        promptText = `<speak>${ssmlLines.join('')}</speak>`;
+    }
     
     const {media} = await ai.generate({
       model: 'googleai/gemini-2.5-flash-preview-tts',

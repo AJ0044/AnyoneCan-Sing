@@ -12,8 +12,9 @@ import { AudioPlayer } from "@/components/audio-player";
 import { KaraokeDisplay } from "@/components/karaoke-display";
 import type { VoiceStyle } from "./melodia-lingua";
 import { voiceStyles } from "./melodia-lingua";
-import { Music2, Loader2, Edit, Music, Mic, Wand2, Upload } from "lucide-react";
+import { Music2, Loader2, Edit, Music, Mic, Wand2, Upload, UserPlus } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { Checkbox } from "@/components/ui/checkbox";
 
 interface OutputPanelProps {
   englishLyrics: string;
@@ -22,7 +23,7 @@ interface OutputPanelProps {
   isTranslating: boolean;
   selectedVoice: VoiceStyle;
   setSelectedVoice: (voice: VoiceStyle) => void;
-  onSynthesize: () => void;
+  onSynthesize: (makeDuet: boolean) => void;
   isSynthesizing: boolean;
   audioDataUri: string | null;
   showPlayer: boolean;
@@ -51,6 +52,7 @@ export function OutputPanel({
   const [customAudioDataUri, setCustomAudioDataUri] = React.useState<string | null>(null);
   const fileInputRef = React.useRef<HTMLInputElement>(null);
   const { toast } = useToast();
+  const [makeDuet, setMakeDuet] = React.useState(false);
 
   const lyricsToDisplay = activeTab === "original" ? englishLyrics : malayalamLyrics;
   const lyricsLines = lyricsToDisplay.split('\n').filter(line => line.trim() !== '');
@@ -197,12 +199,19 @@ export function OutputPanel({
             ))}
           </SelectContent>
         </Select>
+        <div className="flex items-center space-x-2 pt-2">
+            <Checkbox id="duet-checkbox" checked={makeDuet} onCheckedChange={(checked) => setMakeDuet(Boolean(checked))} />
+            <Label htmlFor="duet-checkbox" className="flex items-center gap-2">
+                <UserPlus className="h-4 w-4" />
+                Create Duet Track (Adds pauses)
+            </Label>
+        </div>
       </div>
 
       <div className="flex flex-col sm:flex-row gap-2">
         <Button
           size="lg"
-          onClick={onSynthesize}
+          onClick={() => onSynthesize(makeDuet)}
           disabled={isSynthesizing || !malayalamLyrics.trim()}
           className="w-full font-bold text-lg"
         >

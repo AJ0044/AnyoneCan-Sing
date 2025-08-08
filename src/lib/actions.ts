@@ -31,6 +31,7 @@ const synthesizeSchema = z.object({
     'aoede',
     'achird',
   ]),
+  makeDuet: z.boolean(),
 });
 
 export async function handleSynthesize(formData: FormData) {
@@ -38,10 +39,12 @@ export async function handleSynthesize(formData: FormData) {
     const validatedData = synthesizeSchema.parse({
       lyrics: formData.get('lyrics'),
       voiceStyle: formData.get('voiceStyle'),
+      makeDuet: formData.get('makeDuet') === 'true',
     });
     const result = await synthesizeSong(validatedData as SynthesizeSongInput);
     return { success: true, data: result };
-  } catch (error) {
+  } catch (error)
+    {
     console.error(error);
     const errorMessage = error instanceof Error ? error.message : "An unknown error occurred during synthesis.";
     return { success: false, error: errorMessage };
