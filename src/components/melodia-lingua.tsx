@@ -17,45 +17,18 @@ export type VoiceStyle =
   | 'puck'
   | 'vindemiatrix';
 
-export type VoiceCategory = {
-  category: 'Male' | 'Female' | 'Child' | 'Cartoon' | 'Robot' | 'AI';
-  voices: {
-    value: VoiceStyle;
-    label: string;
-  }[];
+export type VoiceOption = {
+  value: VoiceStyle;
+  label: string;
 };
 
-export const voiceStyles: VoiceCategory[] = [
-  {
-    category: 'Male',
-    voices: [
-      { value: 'alnilam', label: '🎤 Neutral' },
-      { value: 'charon', label: '🎤 Deep' },
-    ],
-  },
-  {
-    category: 'Female',
-    voices: [
-      { value: 'aoede', label: '🎤 Expressive' },
-      { value: 'achird', label: '🎤 Warm' },
-    ],
-  },
-  {
-    category: 'Child',
-    voices: [{ value: 'aoede', label: '🧒 Child-like' }],
-  },
-  {
-    category: 'Cartoon',
-    voices: [{ value: 'puck', label: '🎭 Cartoon' }],
-  },
-  {
-    category: 'Robot',
-    voices: [{ value: 'charon', label: '🤖 Robot' }],
-  },
-  {
-    category: 'AI',
-    voices: [{ value: 'vindemiatrix', label: '🤖 AI Assistant' }],
-  }
+export const voiceStyles: VoiceOption[] = [
+  { value: 'alnilam', label: '🎤 Male Neutral' },
+  { value: 'charon', label: '🎤 Male Deep' },
+  { value: 'aoede', label: '🎤 Female Expressive' },
+  { value: 'achird', label: '🎤 Female Warm' },
+  { value: 'puck', label: '🎭 Cartoon' },
+  { value: 'vindemiatrix', label: '🤖 AI Assistant' },
 ];
 
 

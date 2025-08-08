@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 import { AudioPlayer } from "@/components/audio-player";
 import { KaraokeDisplay } from "@/components/karaoke-display";
@@ -155,13 +155,8 @@ export function OutputPanel({
             <SelectValue placeholder="Choose a voice style..." />
           </SelectTrigger>
           <SelectContent>
-            {voiceStyles.map(group => (
-                <SelectGroup key={group.category}>
-                    <SelectLabel>{group.category}</SelectLabel>
-                    {group.voices.map(voice => (
-                        <SelectItem key={voice.value} value={voice.value}>{voice.label}</SelectItem>
-                    ))}
-                </SelectGroup>
+            {voiceStyles.map(voice => (
+                <SelectItem key={voice.value} value={voice.value}>{voice.label}</SelectItem>
             ))}
           </SelectContent>
         </Select>
