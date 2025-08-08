@@ -9,12 +9,14 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { preloadedSongs, type Song } from "@/lib/preloaded-songs";
 import { Languages, Loader2, UploadCloud, BookMarked } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import type { VoiceStyle } from "./melodia-lingua";
 
 interface LyricsPanelProps {
   englishLyrics: string;
   setEnglishLyrics: (lyrics: string) => void;
   onTranslate: () => void;
   isTranslating: boolean;
+  setSelectedVoice: (voice: VoiceStyle) => void;
 }
 
 export function LyricsPanel({
@@ -22,6 +24,7 @@ export function LyricsPanel({
   setEnglishLyrics,
   onTranslate,
   isTranslating,
+  setSelectedVoice,
 }: LyricsPanelProps) {
   const fileInputRef = React.useRef<HTMLInputElement>(null);
   const { toast } = useToast();
@@ -34,6 +37,7 @@ export function LyricsPanel({
     const song = preloadedSongs.find((s) => s.title === title);
     if (song) {
       setEnglishLyrics(song.lyrics);
+      setSelectedVoice(song.voice);
     }
   };
 

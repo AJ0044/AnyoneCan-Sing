@@ -126,6 +126,7 @@ export function MelodiaLingua() {
             setEnglishLyrics={setEnglishLyrics}
             onTranslate={onTranslate}
             isTranslating={isTranslating}
+            setSelectedVoice={setSelectedVoice}
           />
           <OutputPanel
             englishLyrics={englishLyrics}
