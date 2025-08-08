@@ -30,9 +30,6 @@ const synthesizeSchema = z.object({
     'charon',
     'aoede',
     'achird',
-    'puck',
-    'vindemiatrix',
-    'child',
   ]),
 });
 

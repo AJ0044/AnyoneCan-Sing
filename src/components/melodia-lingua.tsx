@@ -13,10 +13,7 @@ export type VoiceStyle =
   | 'alnilam'
   | 'charon'
   | 'aoede'
-  | 'achird'
-  | 'puck'
-  | 'vindemiatrix'
-  | 'child';
+  | 'achird';
 
 export type VoiceOption = {
   value: VoiceStyle;
@@ -28,9 +25,6 @@ export const voiceStyles: VoiceOption[] = [
   { value: 'charon', label: '🎤 Male Deep' },
   { value: 'aoede', label: '🎤 Female Expressive' },
   { value: 'achird', label: '🎤 Female Warm' },
-  { value: 'child', label: '🧒 Child' },
-  { value: 'puck', label: '🎭 Cartoon' },
-  { value: 'vindemiatrix', label: '🤖 AI Assistant' },
 ];
 
 
