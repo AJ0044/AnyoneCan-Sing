@@ -3,7 +3,7 @@ import './globals.css';
 import { Toaster } from "@/components/ui/toaster"
 
 export const metadata: Metadata = {
-  title: 'MelodiaLingua',
+  title: 'AnyoneCanSing',
   description: 'Translate English song lyrics to Malayalam and hear them sung.',
 };
 

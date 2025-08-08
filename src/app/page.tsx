@@ -8,7 +8,7 @@ export default function Home() {
         <div className="flex items-center justify-center gap-3">
           <Music className="text-primary h-8 w-8" />
           <h1 className="font-headline text-4xl md:text-5xl font-bold text-primary">
-            MelodiaLingua
+            AnyoneCanSing
           </h1>
         </div>
         <p className="mt-2 text-lg text-muted-foreground max-w-2xl mx-auto">
