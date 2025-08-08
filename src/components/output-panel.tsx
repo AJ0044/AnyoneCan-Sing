@@ -12,7 +12,8 @@ import { AudioPlayer } from "@/components/audio-player";
 import { KaraokeDisplay } from "@/components/karaoke-display";
 import type { VoiceStyle } from "./melodia-lingua";
 import { voiceStyles } from "./melodia-lingua";
-import { Music2, Loader2, Edit, Music, Mic, Wand2 } from "lucide-react";
+import { Music2, Loader2, Edit, Music, Mic, Wand2, Upload } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 interface OutputPanelProps {
   englishLyrics: string;
@@ -47,6 +48,9 @@ export function OutputPanel({
     isPlaying: false,
     currentLineIndex: -1,
   });
+  const [customAudioDataUri, setCustomAudioDataUri] = React.useState<string | null>(null);
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
+  const { toast } = useToast();
 
   const lyricsToDisplay = activeTab === "original" ? englishLyrics : malayalamLyrics;
   const lyricsLines = lyricsToDisplay.split('\n').filter(line => line.trim() !== '');
@@ -64,6 +68,37 @@ export function OutputPanel({
 
   const resetKaraoke = () => {
     setKaraokeState({ isPlaying: false, currentLineIndex: -1 });
+  }
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      if (file.type.startsWith('audio/')) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const result = e.target?.result as string;
+          setCustomAudioDataUri(result);
+          setShowPlayer(true);
+          toast({
+            title: "Audio Loaded",
+            description: `${file.name} is ready for karaoke.`,
+          });
+        };
+        reader.readAsDataURL(file);
+      } else {
+        toast({
+          variant: "destructive",
+          title: "Unsupported File",
+          description: "Please upload a valid audio file (e.g., MP3, WAV).",
+        });
+      }
+      event.target.value = "";
+    }
+  };
+  
+  const handleEditClick = () => {
+    setShowPlayer(false);
+    setCustomAudioDataUri(null);
   }
 
   if (isTranslating) {
@@ -87,7 +122,9 @@ export function OutputPanel({
     );
   }
   
-  if (showPlayer && audioDataUri) {
+  const audioForPlayer = customAudioDataUri || audioDataUri;
+
+  if (showPlayer && audioForPlayer) {
     return (
         <div className="p-6 flex flex-col gap-4 h-full bg-accent/20">
             <KaraokeDisplay 
@@ -104,13 +141,13 @@ export function OutputPanel({
                 </Tabs>
                 <AudioPlayer
                     ref={audioRef}
-                    audioDataUri={audioDataUri}
+                    audioDataUri={audioForPlayer}
                     onPlay={() => setKaraokeState(prev => ({...prev, isPlaying: true}))}
                     onPause={resetKaraoke}
                     onEnded={resetKaraoke}
                     onTimeUpdate={handleTimeUpdate}
                  />
-                <Button variant="outline" className="w-full mt-4" onClick={() => setShowPlayer(false)}>
+                <Button variant="outline" className="w-full mt-4" onClick={handleEditClick}>
                     <Edit className="mr-2 h-4 w-4" /> Edit Lyrics & Voice
                 </Button>
             </div>
@@ -162,19 +199,37 @@ export function OutputPanel({
         </Select>
       </div>
 
-      <Button
-        size="lg"
-        onClick={onSynthesize}
-        disabled={isSynthesizing || !malayalamLyrics.trim()}
-        className="w-full font-bold text-lg"
-      >
-        {isSynthesizing ? (
-          <Loader2 className="animate-spin" />
-        ) : (
-          <Music2 />
-        )}
-        Synthesize Song
-      </Button>
+      <div className="flex flex-col sm:flex-row gap-2">
+        <Button
+          size="lg"
+          onClick={onSynthesize}
+          disabled={isSynthesizing || !malayalamLyrics.trim()}
+          className="w-full font-bold text-lg"
+        >
+          {isSynthesizing ? (
+            <Loader2 className="animate-spin" />
+          ) : (
+            <Music2 />
+          )}
+          Synthesize Song
+        </Button>
+        <Button
+            size="lg"
+            variant="outline"
+            onClick={() => fileInputRef.current?.click()}
+            className="w-full font-bold text-lg"
+        >
+            <Upload className="mr-2 h-5 w-5" />
+            Upload Karaoke Track
+        </Button>
+        <input
+          type="file"
+          ref={fileInputRef}
+          className="hidden"
+          accept="audio/*"
+          onChange={handleFileChange}
+        />
+      </div>
     </div>
   );
 }
