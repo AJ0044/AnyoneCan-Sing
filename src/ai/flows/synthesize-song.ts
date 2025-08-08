@@ -17,17 +17,14 @@ const SynthesizeSongInputSchema = z.object({
   lyrics: z.string().describe('The Malayalam lyrics of the song to synthesize.'),
   voiceStyle: z
     .enum([
-      'MaleBass',
-      'MaleTenor',
-      'MaleSoft',
-      'FemaleSoprano',
-      'FemaleAlto',
-      'FemaleMelodic',
-      'Childlike',
-      'Robotic',
-      'Cartoon',
+      'alnilam',
+      'charon',
+      'aoede',
+      'achird',
+      'puck',
+      'vindemiatrix',
     ])
-    .describe("The desired voice style for the synthesized song.  Must be one of 'MaleBass', 'MaleTenor', 'MaleSoft', 'FemaleSoprano', 'FemaleAlto', 'FemaleMelodic', 'Childlike', 'Robotic', or 'Cartoon'."),
+    .describe("The desired voice style for the synthesized song."),
 });
 export type SynthesizeSongInput = z.infer<typeof SynthesizeSongInputSchema>;
 
@@ -42,18 +39,6 @@ export async function synthesizeSong(input: SynthesizeSongInput): Promise<Synthe
   return synthesizeSongFlow(input);
 }
 
-const voiceMap: {[key: string]: string} = {
-  MaleBass: 'algenib',
-  MaleTenor: 'alnilam',
-  MaleSoft: 'achird',
-  FemaleSoprano: 'algieba',
-  FemaleAlto: 'aoede',
-  FemaleMelodic: 'autonoe',
-  Childlike: 'puck',
-  Robotic: 'fenrir',
-  Cartoon: 'charon',
-};
-
 const synthesizeSongFlow = ai.defineFlow(
   {
     name: 'synthesizeSongFlow',
@@ -61,10 +46,10 @@ const synthesizeSongFlow = ai.defineFlow(
     outputSchema: SynthesizeSongOutputSchema,
   },
   async input => {
-    const voiceName = voiceMap[input.voiceStyle];
-    if (!voiceName) {
-      throw new Error(`Unknown voice style: ${input.voiceStyle}`);
-    }
+    let promptText = input.lyrics;
+    // Note: SSML for pitch/rate is not directly supported by the current TTS model API in this manner.
+    // The voice model itself determines the characteristics.
+    // We pass the raw lyrics to the selected voice.
 
     const {media} = await ai.generate({
       model: 'googleai/gemini-2.5-flash-preview-tts',
@@ -72,11 +57,11 @@ const synthesizeSongFlow = ai.defineFlow(
         responseModalities: ['AUDIO'],
         speechConfig: {
           voiceConfig: {
-            prebuiltVoiceConfig: {voiceName: voiceName},
+            prebuiltVoiceConfig: {voiceName: input.voiceStyle},
           },
         },
       },
-      prompt: input.lyrics,
+      prompt: promptText,
     });
     if (!media) {
       throw new Error('no media returned');

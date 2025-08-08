@@ -26,15 +26,12 @@ export async function handleTranslate(formData: FormData) {
 const synthesizeSchema = z.object({
   lyrics: z.string().min(1),
   voiceStyle: z.enum([
-    'MaleBass',
-    'MaleTenor',
-    'MaleSoft',
-    'FemaleSoprano',
-    'FemaleAlto',
-    'FemaleMelodic',
-    'Childlike',
-    'Robotic',
-    'Cartoon',
+    'alnilam',
+    'charon',
+    'aoede',
+    'achird',
+    'puck',
+    'vindemiatrix',
   ]),
 });
 

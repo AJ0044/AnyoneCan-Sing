@@ -2,7 +2,7 @@
 "use client";
 
 import * as React from "react";
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { LyricsPanel } from "@/components/lyrics-panel";
@@ -10,26 +10,52 @@ import { OutputPanel } from "@/components/output-panel";
 import { handleTranslate, handleSynthesize } from "@/lib/actions";
 
 export type VoiceStyle = 
-  | 'MaleBass'
-  | 'MaleTenor'
-  | 'MaleSoft'
-  | 'FemaleSoprano'
-  | 'FemaleAlto'
-  | 'FemaleMelodic'
-  | 'Childlike'
-  | 'Robotic'
-  | 'Cartoon';
+  | 'alnilam'
+  | 'charon'
+  | 'aoede'
+  | 'achird'
+  | 'puck'
+  | 'vindemiatrix';
 
-export const voiceStyles: { value: VoiceStyle, label: string }[] = [
-  { value: 'MaleTenor', label: '🎤 Male (Tenor)' },
-  { value: 'MaleBass', label: '🎤 Male (Bass)' },
-  { value: 'MaleSoft', label: '🎤 Male (Soft)' },
-  { value: 'FemaleSoprano', label: '🎤 Female (Soprano)' },
-  { value: 'FemaleAlto', label: '🎤 Female (Alto)' },
-  { value: 'FemaleMelodic', label: '🎤 Female (Melodic)' },
-  { value: 'Childlike', label: '🧒 Child-like' },
-  { value: 'Robotic', label: '🤖 Robotic' },
-  { value: 'Cartoon', label: '🎭 Cartoon' },
+export type VoiceCategory = {
+  category: 'Male' | 'Female' | 'Child' | 'Cartoon' | 'Robot' | 'AI';
+  voices: {
+    value: VoiceStyle;
+    label: string;
+  }[];
+};
+
+export const voiceStyles: VoiceCategory[] = [
+  {
+    category: 'Male',
+    voices: [
+      { value: 'alnilam', label: '🎤 Neutral' },
+      { value: 'charon', label: '🎤 Deep' },
+    ],
+  },
+  {
+    category: 'Female',
+    voices: [
+      { value: 'aoede', label: '🎤 Expressive' },
+      { value: 'achird', label: '🎤 Warm' },
+    ],
+  },
+  {
+    category: 'Child',
+    voices: [{ value: 'aoede', label: '🧒 Child-like' }],
+  },
+  {
+    category: 'Cartoon',
+    voices: [{ value: 'puck', label: '🎭 Cartoon' }],
+  },
+  {
+    category: 'Robot',
+    voices: [{ value: 'charon', label: '🤖 Robot' }],
+  },
+  {
+    category: 'AI',
+    voices: [{ value: 'vindemiatrix', label: '🤖 AI Assistant' }],
+  }
 ];
 
 
@@ -37,7 +63,7 @@ export function MelodiaLingua() {
   const [englishLyrics, setEnglishLyrics] = useState<string>("");
   const [malayalamLyrics, setMalayalamLyrics] = useState<string>("");
   const [audioDataUri, setAudioDataUri] = useState<string | null>(null);
-  const [selectedVoice, setSelectedVoice] = useState<VoiceStyle>('MaleTenor');
+  const [selectedVoice, setSelectedVoice] = useState<VoiceStyle>('alnilam');
   
   const [isTranslating, setIsTranslating] = useState<boolean>(false);
   const [isSynthesizing, setIsSynthesizing] = useState<boolean>(false);
