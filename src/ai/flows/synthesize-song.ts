@@ -48,9 +48,9 @@ const voiceMap: {[key: string]: string} = {
   FemaleSoprano: 'Hadar',
   FemaleAlto: 'Gienah',
   FemaleMelodic: 'Betria',
-  Childlike: 'Vega',
+  Childlike: 'Spica',
   Robotic: 'Pollux',
-  Cartoon: 'Spica',
+  Cartoon: 'Electra',
 };
 
 const synthesizeSongFlow = ai.defineFlow(
@@ -116,4 +116,3 @@ async function toWav(
     writer.end();
   });
 }
-
