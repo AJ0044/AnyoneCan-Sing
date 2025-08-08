@@ -1,3 +1,4 @@
+
 'use server';
 
 /**
@@ -42,15 +43,15 @@ export async function synthesizeSong(input: SynthesizeSongInput): Promise<Synthe
 }
 
 const voiceMap: {[key: string]: string} = {
-  MaleBass: 'Algenib',
-  MaleTenor: 'Acamar',
-  MaleSoft: 'Polaris',
-  FemaleSoprano: 'Hadar',
-  FemaleAlto: 'Gienah',
-  FemaleMelodic: 'Betria',
-  Childlike: 'Spica',
-  Robotic: 'Pollux',
-  Cartoon: 'Electra',
+  MaleBass: 'algenib',
+  MaleTenor: 'alnilam',
+  MaleSoft: 'achird',
+  FemaleSoprano: 'algieba',
+  FemaleAlto: 'aoede',
+  FemaleMelodic: 'autonoe',
+  Childlike: 'puck',
+  Robotic: 'fenrir',
+  Cartoon: 'charon',
 };
 
 const synthesizeSongFlow = ai.defineFlow(
