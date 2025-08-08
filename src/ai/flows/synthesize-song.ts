@@ -23,6 +23,7 @@ const SynthesizeSongInputSchema = z.object({
       'achird',
       'puck',
       'vindemiatrix',
+      'child',
     ])
     .describe("The desired voice style for the synthesized song."),
 });
@@ -47,17 +48,21 @@ const synthesizeSongFlow = ai.defineFlow(
   },
   async input => {
     let promptText = input.lyrics;
-    // Note: SSML for pitch/rate is not directly supported by the current TTS model API in this manner.
-    // The voice model itself determines the characteristics.
-    // We pass the raw lyrics to the selected voice.
+    let voiceName: string = input.voiceStyle;
 
+    if (input.voiceStyle === 'child') {
+      promptText = `<speak><prosody pitch='+6st' rate='110%'>${input.lyrics}</prosody></speak>`;
+      // Use a female voice as the base for the child voice
+      voiceName = 'aoede';
+    }
+    
     const {media} = await ai.generate({
       model: 'googleai/gemini-2.5-flash-preview-tts',
       config: {
         responseModalities: ['AUDIO'],
         speechConfig: {
           voiceConfig: {
-            prebuiltVoiceConfig: {voiceName: input.voiceStyle},
+            prebuiltVoiceConfig: {voiceName: voiceName},
           },
         },
       },

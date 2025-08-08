@@ -32,6 +32,7 @@ const synthesizeSchema = z.object({
     'achird',
     'puck',
     'vindemiatrix',
+    'child',
   ]),
 });
 
